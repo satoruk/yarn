@@ -113,10 +113,11 @@ export async function main({
     '--emoji [bool]',
     'enable emoji in output',
     boolify,
-    process.platform === 'darwin' ||
-      process.env.TERM_PROGRAM === 'Hyper' ||
-      process.env.TERM_PROGRAM === 'HyperTerm' ||
-      process.env.TERM_PROGRAM === 'Terminus',
+    process.stdout.isTTY &&
+      (process.platform === 'darwin' ||
+        process.env.TERM_PROGRAM === 'Hyper' ||
+        process.env.TERM_PROGRAM === 'HyperTerm' ||
+        process.env.TERM_PROGRAM === 'Terminus'),
   );
   commander.option('-s, --silent', 'skip Yarn console logs, other types of logs (script output) will be printed');
   commander.option('--cwd <cwd>', 'working directory to use', process.cwd());
@@ -248,7 +249,7 @@ export async function main({
   //
   const Reporter = commander.json ? JSONReporter : ConsoleReporter;
   const reporter = new Reporter({
-    emoji: process.stdout.isTTY && commander.emoji,
+    emoji: commander.emoji,
     verbose: commander.verbose,
     noProgress: !commander.progress,
     isSilent: boolifyWithDefault(process.env.YARN_SILENT, false) || commander.silent,
