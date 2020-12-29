@@ -63,7 +63,7 @@ export default class ConsoleReporter extends BaseReporter {
   _spinners: Set<Spinner>;
 
   _prependEmoji(msg: string, emoji: ?string): string {
-    if (this.emoji && emoji && this.isTTY) {
+    if (this.emoji && emoji) {
       msg = `${emoji}  ${msg}`;
     }
     return msg;
@@ -135,7 +135,7 @@ export default class ConsoleReporter extends BaseReporter {
     if (typeof value !== 'number' && typeof value !== 'string') {
       value = inspect(value, {
         breakLength: 0,
-        colors: this.isTTY,
+        colors: this.isTTY, // こここの判定正しい？
         depth: null,
         maxArrayLength: null,
       });
